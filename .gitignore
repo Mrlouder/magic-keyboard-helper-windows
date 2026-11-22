@@ -1,0 +1,26 @@
+# Personal files, created by the app on each PC
+settings.ini
+error.log
+# Backup of your keyboard's original Bluetooth descriptor (contains its MAC address)
+sdp_backup_*.reg
+
+# AutoHotkey runtime: download it from https://www.autohotkey.com/ instead
+*.exe
+
+# make_icon.py preview
+icon_preview.png
+
+# Sync / OS leftovers
+*.conflict*
+desktop.ini
+Thumbs.db
+
+# Release builds (tools/make_release.py)
+dist/
+
+# Personal to-do list and Hungarian notes (not published)
+TEENDOK.md
+README.hu.md
+
+# Python cache
+__pycache__/

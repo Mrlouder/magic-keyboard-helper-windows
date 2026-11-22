@@ -1,0 +1,44 @@
+# Push a tag like v3.3 -> builds MagicKeyboardHelper-v3.3.zip and publishes a GitHub release.
+# "Run workflow" by hand -> only builds the zip (downloadable from the run's artifacts).
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build the release zip
+        run: |
+          if [ "$GITHUB_REF_TYPE" = "tag" ]; then
+            python tools/make_release.py --check-tag "$GITHUB_REF_NAME"
+          else
+            python tools/make_release.py
+          fi
+
+      - name: Upload the zip as a build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MagicKeyboardHelper
+          path: dist/MagicKeyboardHelper-*.zip
+
+      - name: Publish the GitHub release
+        if: github.ref_type == 'tag'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/MagicKeyboardHelper-*.zip \
+            --title "Magic Keyboard Helper $GITHUB_REF_NAME" \
+            --notes-file dist/RELEASE_NOTES.md
