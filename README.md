@@ -115,7 +115,7 @@ The app then handles F24 and F23 combinations.
 - Pairing the keyboard again (or reinstalling Windows) removes the patch. The app notices this and offers to apply it again.
 - If the expected bytes are not found, the script changes nothing.
 
-**This edits the registry with administrator rights. Use it at your own risk.** It was tested on one A2449 (Hungarian layout) with Windows 11.
+**This edits the registry with administrator rights. Use it at your own risk.** It was tested on one A2449 (Hungarian layout) with Windows 11, on a desktop PC and on a laptop.
 
 ## Battery
 
@@ -125,7 +125,7 @@ The keyboard reports its battery on a vendor HID collection (`0xFF00/0x14`) in i
 
 - **Touch ID** fingerprint reading does not work on Windows (it needs Apple's Secure Enclave). The key works as a Lock key.
 - **USB cable:** when the keyboard is plugged into the PC with a cable it switches to USB mode, and there the Fn and Lock keys cannot be fixed (USB devices have no descriptor cache in the registry). The battery still works. On a wall charger the keyboard stays on Bluetooth and everything works.
-- **Brightness:** built-in screens through Windows (WMI), external monitors only with DDC/CI. The laptop screen support has not been tested on many laptops yet.
+- **Brightness:** built-in screens through Windows (WMI), external monitors only with DDC/CI. The laptop screen support has been tested on one laptop so far.
 
 ## Files
 
