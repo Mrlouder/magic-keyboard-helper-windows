@@ -11,9 +11,11 @@ fragments around the bolt, even at 16-20 px.
 
 Low battery variant: the same cut-out with an orange dot in it.
 
-Output: magic_keyboard.ico, magic_keyboard_charging.ico, magic_keyboard_low.ico
-(16, 20, 24, 32, 40, 48, 64, 256 px) and icon_preview.png (one row each: normal,
-charging, low).
+Patch missing variant: the same cut-out with a red disc and a white "!" in it.
+
+Output: magic_keyboard.ico, magic_keyboard_charging.ico, magic_keyboard_low.ico,
+magic_keyboard_warn.ico (16, 20, 24, 32, 40, 48, 64, 256 px) and icon_preview.png
+(one row each: normal, charging, low, warn).
 Run:  python make_icon.py
 """
 import math
@@ -27,6 +29,7 @@ COLOR = (0xFF, 0xFF, 0xFF)
 BOLT_COLOR = (0x4A, 0xDE, 0x80)       # green: charging
 LOW_COLOR = (0xFB, 0xA3, 0x1E)        # orange: low battery
 LOW_DOT = 0.62                        # radius of the orange dot relative to the badge circle
+WARN_COLOR = (0xEF, 0x44, 0x44)       # red: the Fn / Lock patch is missing
 
 # Outline of the bolt in a unit square (x, y), fitted into the badge circle
 BOLT = [(0.68, 0.00), (0.06, 0.60), (0.46, 0.60), (0.32, 1.00), (0.94, 0.38), (0.54, 0.38)]
@@ -113,8 +116,16 @@ def bolt_coverage(cx, cy, pts, n=5):
     return hits / (n * n)
 
 
+def warn_glyph(cx, cy, bcx, bcy, R):
+    """Coverage of the white "!" inside the red badge disc (bar + dot)."""
+    w = max(1.0, 0.30 * R)
+    bar = rrect_sdf(cx, cy, bcx - w / 2, bcy - 0.62 * R, bcx + w / 2, bcy + 0.12 * R, w / 2)
+    dot = rrect_sdf(cx, cy, bcx - w / 2, bcy + 0.34 * R, bcx + w / 2, bcy + 0.34 * R + w, w / 2)
+    return coverage(min(bar, dot))
+
+
 def render(S, badge=None):
-    """badge: None (normal), "charging" (green bolt) or "low" (orange dot)."""
+    """badge: None (normal), "charging" (green bolt), "low" (orange dot) or "warn" (red "!")."""
     charging = badge is not None
     sp = SPECS.get(S) or scaled_spec(S)
     x0, y0, x1, y1 = sp["frame"]
@@ -148,6 +159,10 @@ def render(S, badge=None):
                 ck = coverage(math.hypot(cx - bcx, cy - bcy) - R)   # round cut-out
                 if badge == "low":
                     cb, bcol = coverage(math.hypot(cx - bcx, cy - bcy) - R * LOW_DOT), LOW_COLOR
+                elif badge == "warn":
+                    cb = coverage(math.hypot(cx - bcx, cy - bcy) - R * 0.98)
+                    g = warn_glyph(cx, cy, bcx, bcy, R)
+                    bcol = tuple(WARN_COLOR[i] * (1 - g) + 255 * g for i in range(3))
                 else:
                     cb, bcol = bolt_coverage(cx, cy, pts), BOLT_COLOR
                 a_kb = a * (1 - ck)
@@ -225,10 +240,12 @@ def main():
     normal = {S: render(S) for S in SIZES}
     charging = {S: render(S, "charging") for S in SIZES}
     low = {S: render(S, "low") for S in SIZES}
+    warn = {S: render(S, "warn") for S in SIZES}
     write_ico(os.path.join(HERE, "magic_keyboard.ico"), normal)
     write_ico(os.path.join(HERE, "magic_keyboard_charging.ico"), charging)
     write_ico(os.path.join(HERE, "magic_keyboard_low.ico"), low)
-    write_preview([normal, charging, low])
+    write_ico(os.path.join(HERE, "magic_keyboard_warn.ico"), warn)
+    write_preview([normal, charging, low, warn])
     print("done:", ", ".join(f"{s}px" for s in SIZES))
 
 

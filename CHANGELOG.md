@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.4 (2026-11)
+
+- **Clearer warning when the Fn / Lock patch is missing** (e.g. after pairing the keyboard again): the tray icon gets a red "!" badge and its tooltip says so until the patch is applied. A single click on the tray icon (or the new tray menu item) applies the patch. The notification is still shown once.
+- The app checks the patch every 2 minutes, not only at start-up and when the keyboard reconnects, and looks again shortly after you apply it.
+- Turning off "Warn me when the Fn / Lock patch is missing" also removes the warning icon.
+
 ## 3.3 (2026-11)
 
 First public release.

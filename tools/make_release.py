@@ -39,6 +39,7 @@ APP_FILES = [
     "magic_keyboard.ico",
     "magic_keyboard_charging.ico",
     "magic_keyboard_low.ico",
+    "magic_keyboard_warn.ico",
     "README.md",
     "LICENSE",
     "CHANGELOG.md",

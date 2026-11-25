@@ -30,7 +30,7 @@ The model number is printed on the bottom of the keyboard. Other models are not 
 - **Mac-style on-screen display** for brightness and volume (16 steps, without the Windows volume flyout).
 - **Battery level** in the tray, time-left estimate, low battery reminders, charging icon. No extra software needed.
 - **Key remaps** (replaces PowerToys Keyboard Manager), stored by physical key, so they work with any Windows keyboard layout. One-click **Apple ISO key fix** for UK / German / Hungarian etc. keyboards.
-- **Patch watch:** tells you if the Fn / Lock patch is lost (e.g. after pairing the keyboard again) and applies it with one click.
+- **Patch watch:** if the Fn / Lock patch is lost (e.g. after pairing the keyboard again), the tray icon gets a red "!" badge, and a single click on it applies the patch again.
 - **Alt + mouse wheel** = volume. **Double-tap F5** = dictation (optional).
 
 Everything can be switched on or off in the Settings window (double-click the tray icon).
